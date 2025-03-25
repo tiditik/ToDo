@@ -1,0 +1,16 @@
+{
+  "name": "taskalert",
+  "module": "index.js",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/figlet": "^1.7.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "fastify": "^5.2.1",
+    "figlet": "^1.8.0"
+  }
+}
