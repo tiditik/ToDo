@@ -7,7 +7,7 @@ const fastify = Fastify({
 });
 
 // Регистрация роутов.
-fastify.register(userRoute, { prefix: "api/user" });
+fastify.register(userRoute, { prefix: "api/users" });
 
 // Функция запуска сервера.
 const start = async () => {
