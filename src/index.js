@@ -1,12 +1,13 @@
 import figlet from "figlet";
 import Fastify from "fastify";
 import userRoute from "./users/userRoutes.js";
+import jwtPlugin from "./plugins/jwtPlugin.js";
 
 const fastify = Fastify({
   logger: true,
 });
 
-// Регистрация роутов.
+fastify.register(jwtPlugin);
 fastify.register(userRoute, { prefix: "api/users" });
 
 // Функция запуска сервера.
