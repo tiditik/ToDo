@@ -8,7 +8,43 @@ datasource db {
 }
 
 model User {
-  id Int  @id @default(autoincrement())
-  email String @unique
-  password String 
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+
+  tasks         Task[]
+  notifications Notification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  status      String  @default("pending")
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  notifications Notification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id      Int    @id @default(autoincrement())
+  type    String
+  message String
+  status  String @default("pending") // pendinf, sent, failed
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  taskId Int?
+  task   Task? @relation(fields: [taskId], references: [id])
+
+  createdAt DateTime @default(now())
 }
