@@ -1,4 +1,3 @@
-import fastify from "fastify";
 import userService from "./userService";
 
 async function getAllUsers(request, reply) {
