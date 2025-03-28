@@ -1,0 +1,10 @@
+{
+  "name": "notifications",
+  "module": "index.ts",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "amqplib": "^0.10.5",
+    "fastify": "^5.2.2"
+  }
+}

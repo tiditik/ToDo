@@ -1,6 +1,6 @@
-import {
-  PrismaClient
-} from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { sendNotification } from "../rabbitmq";
+
 
 const prisma = new PrismaClient();
 
@@ -31,18 +31,30 @@ async function createTask(token, title, description, fastifyInstance) {
 
     const taskData = {
       title: title,
-      userId: userId,
+      creatorId: userId,
     };
 
-    if (description) {
+    if (description != undefined) {
       taskData.description = description;
     }
 
     const task = await prisma.task.create({
       data: taskData
     });
+
+    // Отправим сообщение в rabbitmq
+    const newTaskData = {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      craetedAd: task.createdAt
+    };
+
+    sendNotification( {action: 'create', task: newTaskData} );
     return task;
   } catch (error) {
+    console.error(error)
     throw new Error("Не удалось создать задачу.");
   }
 }
@@ -57,7 +69,20 @@ async function updateTask(id, title, description, status) {
         description: description,
         status: status
       }
-    })
+    });
+
+    // Отправим сообщение в rabbitmq
+    const updatedTaskData = {
+      id: updatedTask.id,
+      title: updatedTask.title,
+      description: updatedTask.description,
+      status: updatedTask.status,
+      userId: updatedTask.userId,
+      updatedTask: updatedTask.updatedAt
+    };
+
+    sendNotification({ action: 'update', task: updatedTaskData });
+
     return { updatedTask };
   } catch (error) {
     if (error.code === 'P2025') {
@@ -73,6 +98,8 @@ async function deleteTask(id) {
         id: id
       }
     });
+
+    sendNotification( { action: 'delete', task: deletedTask } );
     return deletedTask;
   } catch (error) {
     if (error.code === 'P2025') {
