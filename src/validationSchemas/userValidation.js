@@ -1,8 +1,10 @@
-const getUserByIdSchemaQuery = {
+const idSchema = {
   type: "object",
   properties: {
     id: { type: "number" },
   },
+  required: ["id"],
+  additionalProperties: false,
 };
 
 const createUserSchemaBody = {
@@ -35,19 +37,13 @@ const loginUserSchemaBody = {
   },
 };
 
-const deleteUserByIdSchemaQuery = {
-  type: "object",
-  properties: {
-    id: { type: "number" },
-  },
-};
+const getUserByIdSchemaQuery = idSchema;
 
-const updateUserByIdSchemaQuery = {
-  type: "object",
-  properties: {
-    id: { type: "number" },
-  },
-};
+const deleteUserByIdSchemaQuery = idSchema;
+
+const updateUserByIdSchemaQuery = idSchema;
+
+const getTaskByIdSchemaQuery = idSchema;
 
 const updateUserByIdSchemaBody = {
   type: "object",
@@ -58,7 +54,23 @@ const updateUserByIdSchemaBody = {
       format: "email",
     },
   },
+  additionalProperties: false,
 };
+
+const createTaskSchemaBody = {
+  type: "object",
+  required: ["title"],
+  properties: {
+    title: {
+      type: "string",
+      minLength: 10
+    },
+    description: {
+      type: "string",
+      minLength: 20
+    }
+  }
+}
 
 export default {
   deleteUserByIdSchemaQuery,
@@ -67,4 +79,6 @@ export default {
   updateUserByIdSchemaBody,
   createUserSchemaBody,
   loginUserSchemaBody,
+  getTaskByIdSchemaQuery,
+  createTaskSchemaBody,
 };

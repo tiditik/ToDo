@@ -2,6 +2,8 @@ import figlet from "figlet";
 import Fastify from "fastify";
 import userRoute from "./users/userRoutes.js";
 import jwtPlugin from "./plugins/jwtPlugin.js";
+import taskRoute from "./tasks/taskRoutes.js";
+
 
 const fastify = Fastify({
   logger: true,
@@ -9,6 +11,7 @@ const fastify = Fastify({
 
 fastify.register(jwtPlugin);
 fastify.register(userRoute, { prefix: "api/users" });
+fastify.register(taskRoute, { prefix: "api/tasks" });
 
 // Функция запуска сервера.
 const start = async () => {

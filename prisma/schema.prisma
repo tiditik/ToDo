@@ -23,7 +23,7 @@ model Task {
   id          Int     @id @default(autoincrement())
   title       String
   description String?
-  status      String  @default("pending")
+  status      TaskStatus  @default(PENDING)
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
@@ -38,7 +38,7 @@ model Notification {
   id      Int    @id @default(autoincrement())
   type    String
   message String
-  status  String @default("pending") // pendinf, sent, failed
+  status  NotificationStatus @default(PENDING)
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
@@ -47,4 +47,18 @@ model Notification {
   task   Task? @relation(fields: [taskId], references: [id])
 
   createdAt DateTime @default(now())
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGESS
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
 }
