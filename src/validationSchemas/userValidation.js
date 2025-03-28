@@ -41,7 +41,11 @@ const getUserByIdSchemaQuery = idSchema;
 
 const deleteUserByIdSchemaQuery = idSchema;
 
+const deleteTaskByIdSchemaQuery = idSchema;
+
 const updateUserByIdSchemaQuery = idSchema;
+
+const updateTaskByIdSchemaQuery = idSchema;
 
 const getTaskByIdSchemaQuery = idSchema;
 
@@ -72,11 +76,39 @@ const createTaskSchemaBody = {
   }
 }
 
+const updateTaskByIdSchemaBody = {
+  type: "object",
+  required: ["title", "status"],
+  properties: {
+    title: {
+      type: "string",
+      minLength: 10
+    },
+    description: {
+      type: "string",
+      minLength: 20
+    },
+    status: {
+      type: "string",
+      enum: [
+        "PENDING",
+        "IN_PROGESS",
+        "COMPLETED",
+        "CANCELLED",
+        "FAILED",
+      ]
+    }
+  }
+}
+
 export default {
   deleteUserByIdSchemaQuery,
+  deleteTaskByIdSchemaQuery,
   updateUserByIdSchemaQuery,
+  updateTaskByIdSchemaQuery,
   getUserByIdSchemaQuery,
   updateUserByIdSchemaBody,
+  updateTaskByIdSchemaBody,
   createUserSchemaBody,
   loginUserSchemaBody,
   getTaskByIdSchemaQuery,

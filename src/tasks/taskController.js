@@ -19,8 +19,19 @@ async function createTask(request, reply) {
   const task = await taskService.createTask(token, title, description, request.server);
   return { task };
 }
-async function updateTask(request, reply) {}
-async function deleteTask(request, reply) {}
+async function updateTask(request, reply) {
+  const { id } = request.params;
+  const { title, description, status } = request.body;
+
+  const updatedTask = await taskService.updateTask(id, title, description, status);
+  return { updatedTask };
+}
+async function deleteTask(request, reply) {
+  const { id } = request.params;
+
+  const deletedTask = await taskService.deleteTask(id);
+  return  { deletedTask };
+}
 
 export default {
   getTasks,
