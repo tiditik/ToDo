@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -34,11 +34,12 @@ async function createUser(email, password) {
 
     return user;
   } catch (error) {
-    if (error.code === "P2002") {
-      throw new Error("Пользователь с таким email уже существует.");
-    } else {
-      throw new Error("Не удалось создать пользователя.");
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new Error("Пользователь с таким email уже существует.");
+      } 
     }
+    throw new Error("Не удалось создать пользователя.");
   }
 }
 
@@ -74,8 +75,10 @@ async function deleteUser(id) {
     });
     return deletedUser;
   } catch (error) {
-    if (error.code === "P2025") {
-      throw new Error("Пользователь не найден.");
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+            throw new Error("Пользователь не найден.");
+      }
     }
     throw new Error("Не удалось удалить пользователя.");
   }
@@ -93,12 +96,13 @@ async function updateUser(id, email) {
     });
     return updatedUser;
   } catch (error) {
-    if (error.code === "P2025") {
-      throw new Error("Пользователь не найден.");
-    } else if (error.code === "P2002") {
-      throw new Error("Email уже занят.");
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        throw new Error("Пользователь не найден.");
+      } else if (error.code === "P2002") {
+        throw new Error("Email уже занят.");
+      }
     }
-
     throw new Error("Не удалось обновить пользователя.");
   }
 }

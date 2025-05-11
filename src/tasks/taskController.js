@@ -2,13 +2,13 @@ import taskService from "./taskService.js";
 
 async function getTasks(request, reply) {
   const tasks = await taskService.getTasks();
-  return { tasks };
+  return reply.send({ tasks });
 }
 async function getTaskById(request, reply) {
   const { id } = request.params;
 
   const task = await taskService.getTaskById(id);
-  return { task };
+  return reply.send({ task });
 }
 async function createTask(request, reply) {
   const requestAuthorization = request.headers.authorization;
@@ -17,20 +17,20 @@ async function createTask(request, reply) {
   const { title, description } = request.body;
 
   const task = await taskService.createTask(token, title, description, request.server);
-  return { task };
+  return reply.send({ task });
 }
 async function updateTask(request, reply) {
   const { id } = request.params;
   const { title, description, status } = request.body;
 
   const updatedTask = await taskService.updateTask(id, title, description, status);
-  return { updatedTask };
+  return reply.send({ updatedTask });
 }
 async function deleteTask(request, reply) {
   const { id } = request.params;
 
   const deletedTask = await taskService.deleteTask(id);
-  return  { deletedTask };
+  return  reply.send({ deletedTask });
 }
 
 export default {

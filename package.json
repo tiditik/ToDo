@@ -5,17 +5,17 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/figlet": "^1.7.0",
-    "prisma": "^6.5.0"
+    "prisma": "^6.7.0"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "@fastify/jwt": "^9.1.0",
-    "@prisma/client": "^6.5.0",
-    "amqplib": "^0.10.5",
-    "fastify": "^5.2.1",
+    "@prisma/client": "^6.7.0",
+    "amqplib": "^0.10.8",
+    "fastify": "^5.3.2",
     "fastify-plugin": "^5.0.1",
-    "figlet": "^1.8.0"
+    "figlet": "^1.8.1"
   }
 }

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { sendNotification } from "../rabbitmq";
 
 
@@ -85,9 +85,11 @@ async function updateTask(id, title, description, status) {
 
     return { updatedTask };
   } catch (error) {
-    if (error.code === 'P2025') {
-      throw new Error("Не удалось найти задачу.")
-    } 
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw new Error("Не удалось найти задачу.")
+      }
+    }
     throw new Error("Не удалось обновить задачу.");
   }
 }
@@ -102,8 +104,10 @@ async function deleteTask(id) {
     sendNotification( { action: 'delete', task: deletedTask } );
     return deletedTask;
   } catch (error) {
-    if (error.code === 'P2025') {
-      throw new Error("Задача не найдена.");
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {    
+      if (error.code === 'P2025') {
+        throw new Error("Задача не найдена.");
+      }
     }
     throw new Error("Не удалось удалить задачу.")
   }

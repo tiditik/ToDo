@@ -8,19 +8,19 @@ async function getAllUsers(request, reply) {
 async function getUserById(request, reply) {
   const { id } = request.params;
   const user = await userService.getUserById(id);
-  return { user };
+  return reply.send({ user });
 }
 
 async function craeteUser(request, reply) {
   const { email, password } = request.body;
   const user = await userService.createUser(email, password);
-  return { user };
+  return reply.send({ user });
 }
 
 async function loginUser(request, reply) {
   const { email, password } = request.body;
   const token = await userService.loginUser(email, password, request.server);
-  return { token };
+  return reply.send({ token });
 }
 
 async function updateUser(request, reply) {
@@ -28,14 +28,14 @@ async function updateUser(request, reply) {
   const { email } = request.body;
 
   const updatedUser = await userService.updateUser(id, email);
-  return { updatedUser };
+  return reply.send({ updatedUser });
 }
 
 async function deleteUser(request, reply) {
   const { id } = request.params;
 
   const deletedUser = await userService.deleteUser(id);
-  return { deletedUser };
+  return reply.send({ deletedUser });
 }
 
 export default {
